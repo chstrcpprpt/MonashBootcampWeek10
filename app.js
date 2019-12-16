@@ -1,4 +1,7 @@
 const inquirer = require("inquirer");
+const Engineer = require("./lib/Engineer");
+const Manager = require("./lib/Manager");
+const Intern = require("./lib/Intern");
 
 let teamArray = [];
 let teamSize;
@@ -11,15 +14,18 @@ async function promptUser() {
   }]);
   teamSize = response.teamSize;
   console.log(teamSize);
-};
-  
-async function teamDetails() {
+
   for(let i = 0; i < teamSize; ++i) {
     const response = await inquirer.prompt([
       {
         type: "input",
         name: "name",
         message: "Please enter your name"
+      },
+      {
+        type: "input",
+        name: "id",
+        message: "Please enter your id"
       },
       {
         type: "input",
@@ -55,14 +61,29 @@ async function teamDetails() {
         when: (response) => response.role === "Intern"
       }
     ]);
+
+    const {
+      name,
+      id,
+      email,
+      role,
+      gitHub,
+      officeNumber,
+      school
+    } = response;
+
+    if (role === "Engineer") {
+      teamArray.push(new Engineer(name, id, email, gitHub));
+    } else if (role === "Intern") {
+      teamArray.push(new Intern(name, id, email, school));
+    } else if (role === "Manager") {
+      teamArray.push(new Manager(name, id, email, officeNumber));
+    };
+
     teamArray.push(response);
   };
   console.log(teamArray);
+
 };
 
-async function runAll() {
-  await promptUser();
-  await teamDetails();
-};
-
-runAll();
+promptUser();
