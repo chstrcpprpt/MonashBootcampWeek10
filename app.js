@@ -13,7 +13,7 @@ async function promptUser() {
     message: "Please input your team size",
   }]);
   teamSize = response.teamSize;
-  console.log(teamSize);
+  // console.log(teamSize);
 
   for(let i = 0; i < teamSize; ++i) {
     const response = await inquirer.prompt([
@@ -80,9 +80,9 @@ async function promptUser() {
       teamArray.push(new Manager(name, id, email, officeNumber));
     };
 
-    teamArray.push(response);
+    console.log(teamArray);
+
   };
-  console.log(teamArray);
 
 };
 
