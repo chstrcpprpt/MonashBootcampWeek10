@@ -35,6 +35,24 @@ async function teamDetails() {
           "Engineer",
           "Intern"
         ]
+      },
+      {
+        type: "input",
+        name: "gitHub",
+        message: "Please enter your gitHub",
+        when: (response) => response.role === "Engineer"
+      },
+      {
+        type: "input",
+        name: "officeNumber",
+        message: "Please enter your officeNumber",
+        when: (response) => response.role === "Manager"
+      },
+      {
+        type: "input",
+        name: "school",
+        message: "Please enter your school",
+        when: (response) => response.role === "Intern"
       }
     ]);
     teamArray.push(response);
