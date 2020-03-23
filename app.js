@@ -2,9 +2,34 @@ const inquirer = require("inquirer");
 const Engineer = require("./lib/Engineer");
 const Manager = require("./lib/Manager");
 const Intern = require("./lib/Intern");
+const ejs = require("ejs");
+
+const fs = require("fs");
+const path = require("path");
+const util = require("util");
+
+const readFileAsync = util.promisify(fs.readFile);
+const writeFileAsync = util.promisify(fs.writeFile);
 
 let teamArray = [];
 let teamSize;
+
+async function renderHTML() {
+  const templatePath = path.resolve(__dirname, 'templates', 'index.ejs');
+
+  // console.log(templatePath);
+
+  const ejsTemplate = await readFileAsync(templatePath, "utf-8");
+  
+  const result = ejs.render(ejsTemplate, {
+    teamMembers: teamArray
+  },{
+    filename: templatePath
+  });
+
+  await writeFileAsync(path.resolve(__dirname, "dist", "renderHTML.html"), result);
+  
+}
 
 async function promptUser() {
   const response = await inquirer.prompt([{
@@ -67,11 +92,11 @@ async function promptUser() {
     } = response;
 
     if (role === "Engineer") {
-      teamArray.push(new Engineer(name, email, gitHub));
+      teamArray.push(new Engineer(name, email, gitHub, role));
     } else if (role === "Intern") {
-      teamArray.push(new Intern(name, email, school));
+      teamArray.push(new Intern(name, email, school, role));
     } else if (role === "Manager") {
-      teamArray.push(new Manager(name, email, officeNumber));
+      teamArray.push(new Manager(name, email, officeNumber, role));
     };
 
     console.log(teamArray);
@@ -80,4 +105,10 @@ async function promptUser() {
 
 };
 
-promptUser();
+async function run() {
+  await promptUser();
+  await renderHTML();
+};
+
+run();
+
