@@ -24,11 +24,6 @@ async function promptUser() {
       },
       {
         type: "input",
-        name: "id",
-        message: "Please enter your id"
-      },
-      {
-        type: "input",
         name: "email",
         message: "Please enter your email"
       },
@@ -64,7 +59,6 @@ async function promptUser() {
 
     const {
       name,
-      id,
       email,
       role,
       gitHub,
@@ -73,11 +67,11 @@ async function promptUser() {
     } = response;
 
     if (role === "Engineer") {
-      teamArray.push(new Engineer(name, id, email, gitHub));
+      teamArray.push(new Engineer(name, email, gitHub));
     } else if (role === "Intern") {
-      teamArray.push(new Intern(name, id, email, school));
+      teamArray.push(new Intern(name, email, school));
     } else if (role === "Manager") {
-      teamArray.push(new Manager(name, id, email, officeNumber));
+      teamArray.push(new Manager(name, email, officeNumber));
     };
 
     console.log(teamArray);
